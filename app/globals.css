@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ANOVEL design tokens — palette matched to the Groundy reference */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: #f1eddd;
+  --color-cream-2: #e9e4cf;
+  --color-olive: #5f7a3a;
+  --color-olive-dark: #4b6229;
+  --color-sage: #c8cfae;
+  --color-orange: #e2632a;
+  --color-plum: #5a3a45;
+  --color-plum-dark: #482d37;
+  --color-mauve: #d8cfd1;
+  --color-ink: #4a3b3f;
+  --color-muted: #8a7f80;
+
+  --font-sans: var(--font-lato), system-ui, sans-serif;
+  --font-hand: var(--font-hand), "Comic Sans MS", cursive;
+  --font-logo: var(--font-logo), cursive;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+/* ---- Full-width layout with a centred content column ----
+   Backgrounds span the screen; content is capped at --content-max and centred.
+   Unlayered rules, so they take precedence over each section's own px-* utilities. */
+:root {
+  --content-max: 1200px;
+  --gutter: 1rem;
+}
+@media (min-width: 640px) {
+  :root {
+    --gutter: 2rem;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --gutter: 2.5rem;
+  }
+}
+.gutter,
+.site-main section:not(section section) {
+  padding-left: max(var(--gutter), calc((100% - var(--content-max)) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100% - var(--content-max)) / 2 + var(--gutter)));
+}
+/* Pages whose top-level wrapper is a padded div (forms) — centre that content too */
+.site-main > div:not(:has(section)):not(.bleed) {
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  margin-inline: auto;
+}
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Hand-made, slightly irregular "brush" shape used for Groundy-style boxes */
+.brush {
+  border-radius: 6px 14px 8px 16px / 16px 8px 14px 6px;
+}
+
+/* Sage brush stroke behind section headings */
+.heading-swash {
+  position: relative;
+  display: inline-block;
+  padding: 0.1em 0.6em;
+  z-index: 0;
+}
+.heading-swash::before {
+  content: "";
+  position: absolute;
+  inset: 18% -2% 4% -2%;
+  background: var(--color-cream-2);
+  border-radius: 40% 10% 35% 12% / 60% 30% 50% 40%;
+  z-index: -1;
+}
+
+/* Icon blob behind step icons */
+.blob {
+  border-radius: 58% 42% 55% 45% / 52% 60% 40% 48%;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Break a band out of the centred column so its background spans the full screen */
+.bleed {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
